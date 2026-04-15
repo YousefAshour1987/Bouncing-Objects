@@ -10,14 +10,33 @@ def playing_area():
     # Draw a filled rectangle that covers most of the screen,
     # leaving approximately a 20-pixel margin on all sides.
     t = Turtle()
+    t.ht()
+    t.speed(5)
     t.color("red")
+    t.penup()
+    t.goto(-240, -240)
+    t.pendown()
     t.begin_fill()
-    t.goto(-242.5, -237.5)
-    t.setheading(90)
-    for i in range(4):
-        t.forward(480)
-        t.right(90)
+    t.goto(-240, 240)
+    t.goto(240, 240)
+    t.goto(240, -240)
+    t.goto(-240, -240)
     t.end_fill()
+    
+def move_heading(t):
+    t.forward(5)
+    if t.xcor() > 240 or t.xcor() < -240:
+        t.setheading(180 - t.heading())
+        t.forward(10)
+    elif t.ycor() > 240 or t.ycor() < -240:
+        t.setheading(-t.heading())
+        t.forward(10)
+
+   
+
+
+def move_xy(t, deltax, deltay):
+    pass
 
 # Function 1: Movement using turtle heading (forward + setheading)
 def move_with_heading(t):
@@ -51,5 +70,22 @@ screen.bgcolor("black")
 screen.setup(520,520)
 
 playing_area()
+yertle = Turtle()
+yertle.color(generate_color())
+yertle.speed(10)
+yertle.setheading(random.randint(0, 360))
+
+turtles = [yertle]
+for i in range(10):
+    t = Turtle()
+    t.color(generate_color())
+    t.speed(0)
+    t.setheading(random.randint(0, 360))
+    turtles.append(t)
+
+alive = True
+while alive:
+    for turt in turtles:
+        move_heading(turt)
 
 screen.exitonclick()
