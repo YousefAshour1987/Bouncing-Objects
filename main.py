@@ -78,11 +78,47 @@ def create_turtle():
     turtle.setheading(random.randint(0, 360))
     return turtle
 
+def create_player():
+    global player
+    player = Turtle()
+    player.speed(0)
+    player.color("white")
+    player.shape("turtle")
+    
+def up():
+    global player
+    player.setheading(90)
+    player.sety(player.ycor() + 10)
+
+def down():
+    global player
+    player.setheading(-90)
+    player.sety(player.ycor() - 10)
+
+def right():
+    global player
+    player.setheading(0)
+    player.setx(player.xcor() + 10)
+
+def left():
+    global player
+    player.setheading(180)
+    player.setx(player.xcor() - 10)
+
 screen = Screen()
 screen.bgcolor("black")
 screen.setup(520,520)
+# key binding. connects key presses and mouse clicks with function calls
+screen.listen()
+screen.onkey(create_player, "space")
+screen.onkeypress(up, "Up")
+screen.onkeypress(down, "Down")
+screen.onkeypress(left, "Left")
+screen.onkeypress(right, "Right")
 
 playing_area()
+
+player = None
 
 turtle = Turtle()
 turtle.color(generate_color())
@@ -96,7 +132,14 @@ turtles = [turtle]
 
 alive = True
 while alive:
+    if player:
+        move_heading(player, turtles)
     for obj in turtles:
         turtles = move_heading(obj, turtles)
+        # determines if the player and the obj have touched
+        if player != None and player.distance(obj) < 20:
+            obj.hideturtle()
+            turtles.remove(obj)
+            
 
 screen.exitonclick()
