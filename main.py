@@ -77,12 +77,12 @@ def create_turtle():
     turtle.shape("circle")
     turtle.setheading(random.randint(0, 360))
     return turtle
+
 screen = Screen()
 screen.bgcolor("black")
 screen.setup(520,520)
 
 playing_area()
-
 
 turtle = Turtle()
 turtle.color(generate_color())
@@ -93,18 +93,10 @@ deltax = random.randint(-2, 2) # randomly selects how far to the right/left the 
 deltay = random.randint(-2, 2) # randomly selects how far to the up/down the turtle will move.
 
 turtles = [turtle]
-# for i in range(10):
-#     t = Turtle()
-#     t.color(generate_color())
-#     t.speed(0)
-#     t.setheading(random.randint(0, 360))
-#     turtles.append(t)
 
 alive = True
 while alive:
     for obj in turtles:
         turtles = move_heading(obj, turtles)
-    
-
 
 screen.exitonclick()
