@@ -24,7 +24,7 @@ def playing_area():
     t.end_fill()
     
 # Function 1: Movement using turtle heading (forward + setheading)
-def move_heading(t):
+def move_heading(t, turtles):
     # Move the turtle continuously using forward movement and its current heading.
     # The turtle should update its position each frame using forward().
     # When the turtle hits a boundary:
@@ -36,9 +36,13 @@ def move_heading(t):
     if t.xcor() > 240 or t.xcor() < -240:
         t.setheading(180 - t.heading())
         t.forward(10)
+        turtles.append(create_turtle())
+
     elif t.ycor() > 240 or t.ycor() < -240:
         t.setheading(-t.heading())
         t.forward(10)
+        turtles.append(create_turtle())
+    return turtles
 
 # Function 2: Movement using delta x / delta y (coordinate-based movement)
 def move_with_deltas(t, deltax, deltay):
@@ -66,6 +70,13 @@ def move_with_deltas(t, deltax, deltay):
     # return any changes to deltax or deltay
     return deltax, deltay
 
+def create_turtle():
+    turtle = Turtle()
+    turtle.color(generate_color())
+    turtle.speed(0)
+    turtle.shape("circle")
+    turtle.setheading(random.randint(0, 360))
+    return turtle
 screen = Screen()
 screen.bgcolor("black")
 screen.setup(520,520)
@@ -75,14 +86,13 @@ playing_area()
 
 turtle = Turtle()
 turtle.color(generate_color())
-turtle.speed(1)
+turtle.speed(0)
 turtle.shape("circle")
 turtle.setheading(random.randint(0, 360))
 deltax = random.randint(-2, 2) # randomly selects how far to the right/left the turtle will move.
 deltay = random.randint(-2, 2) # randomly selects how far to the up/down the turtle will move.
 
-
-# turtles = [yertle]
+turtles = [turtle]
 # for i in range(10):
 #     t = Turtle()
 #     t.color(generate_color())
@@ -92,8 +102,9 @@ deltay = random.randint(-2, 2) # randomly selects how far to the up/down the tur
 
 alive = True
 while alive:
-    # for turt in turtles:
-    #     move_heading(turt)
-    deltax, deltay = move_with_deltas(turtle, deltax, deltay)
+    for obj in turtles:
+        turtles = move_heading(obj, turtles)
+    
+
 
 screen.exitonclick()
