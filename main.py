@@ -11,7 +11,7 @@ def playing_area():
     # leaving approximately a 20-pixel margin on all sides.
     t = Turtle()
     t.ht()
-    t.speed(5)
+    t.speed(0)
     t.color("red")
     t.penup()
     t.goto(-240, -240)
@@ -23,23 +23,8 @@ def playing_area():
     t.goto(-240, -240)
     t.end_fill()
     
-def move_heading(t):
-    t.forward(5)
-    if t.xcor() > 240 or t.xcor() < -240:
-        t.setheading(180 - t.heading())
-        t.forward(10)
-    elif t.ycor() > 240 or t.ycor() < -240:
-        t.setheading(-t.heading())
-        t.forward(10)
-
-   
-
-
-def move_xy(t, deltax, deltay):
-    pass
-
 # Function 1: Movement using turtle heading (forward + setheading)
-def move_with_heading(t):
+def move_heading(t):
     # Move the turtle continuously using forward movement and its current heading.
     # The turtle should update its position each frame using forward().
     # When the turtle hits a boundary:
@@ -47,8 +32,13 @@ def move_with_heading(t):
     #   - Calculate the reflection angle based on the wall it hits.
     #   - Use setheading() to update the direction so it "bounces" off the wall.
     # The result should be smooth motion where direction is controlled by angles.
-    pass
-
+    t.forward(5)
+    if t.xcor() > 240 or t.xcor() < -240:
+        t.setheading(180 - t.heading())
+        t.forward(10)
+    elif t.ycor() > 240 or t.ycor() < -240:
+        t.setheading(-t.heading())
+        t.forward(10)
 
 # Function 2: Movement using delta x / delta y (coordinate-based movement)
 def move_with_deltas(t, deltax, deltay):
@@ -60,32 +50,50 @@ def move_with_deltas(t, deltax, deltay):
     #   - Reverse deltay if it hits a top/bottom wall.
     # This creates a bounce effect using vector-style movement instead of angles.
     # The turtle’s position should be updated using setx() and sety().
-    pass
+    newX = turtle.xcor() + deltax
+    newY = turtle.ycor() + deltay
+    # check to see if turtle will leave the right or left side of playing area
+    if newX > 240 or newX < -240:
+        newX = turtle.xcor()
+        deltax *= -1
+    # check to see if turtle goes out of bounds on the upper or lower boundary
+    if newY > 240 or newY < -240:
+        newY = turtle.ycor()
+        deltay *= -1
 
-
-
+    # sends turtle to the new coordinates
+    turtle.goto(newX, newY)
+    # return any changes to deltax or deltay
+    return deltax, deltay
 
 screen = Screen()
 screen.bgcolor("black")
 screen.setup(520,520)
 
 playing_area()
-yertle = Turtle()
-yertle.color(generate_color())
-yertle.speed(10)
-yertle.setheading(random.randint(0, 360))
 
-turtles = [yertle]
-for i in range(10):
-    t = Turtle()
-    t.color(generate_color())
-    t.speed(0)
-    t.setheading(random.randint(0, 360))
-    turtles.append(t)
+
+turtle = Turtle()
+turtle.color(generate_color())
+turtle.speed(1)
+turtle.shape("circle")
+turtle.setheading(random.randint(0, 360))
+deltax = random.randint(-2, 2) # randomly selects how far to the right/left the turtle will move.
+deltay = random.randint(-2, 2) # randomly selects how far to the up/down the turtle will move.
+
+
+# turtles = [yertle]
+# for i in range(10):
+#     t = Turtle()
+#     t.color(generate_color())
+#     t.speed(0)
+#     t.setheading(random.randint(0, 360))
+#     turtles.append(t)
 
 alive = True
 while alive:
-    for turt in turtles:
-        move_heading(turt)
+    # for turt in turtles:
+    #     move_heading(turt)
+    deltax, deltay = move_with_deltas(turtle, deltax, deltay)
 
 screen.exitonclick()
