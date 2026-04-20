@@ -82,6 +82,7 @@ def create_player():
     global player
     player = Turtle()
     player.speed(0)
+    player.setheading(random.randint(0, 360))
     player.color("white")
     player.shape("turtle")
     
@@ -97,13 +98,15 @@ def down():
 
 def right():
     global player
-    player.setheading(0)
-    player.setx(player.xcor() + 10)
+    player.right(10)
+    # player.setheading(0)
+    # player.setx(player.xcor() + 10)
 
 def left():
     global player
-    player.setheading(180)
-    player.setx(player.xcor() - 10)
+    player.left(10)
+    # player.setheading(180)
+    # player.setx(player.xcor() - 10)
 
 screen = Screen()
 screen.bgcolor("black")
